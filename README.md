@@ -1,4 +1,4 @@
-# postman-tests-regres.in
-Postman tests for regres.in
+# postman-tests-reqres.in
+Postman tests for reqres.in
 
 Just import and run collection tests :)
