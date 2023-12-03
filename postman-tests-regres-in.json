@@ -1,0 +1,226 @@
+{
+	"info": {
+		"_postman_id": "cc8e5195-a2de-49d0-9050-04593efc9842",
+		"name": "AV2 - Testes de Software",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31135752"
+	},
+	"item": [
+		{
+			"name": "GET - SINGLE USER",
+			"item": [
+				{
+					"name": "Get Single User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var dadosEsperados = pm.variables.get('dadosEsperados');\r",
+									"\r",
+									"pm.test('Deve retornar 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve retornar dado esperado', () => {\r",
+									"    pm.expect(jsonData).to.eql(dadosEsperados)\r",
+									"\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set('dadosEsperados', {\r",
+									"    \"data\": {\r",
+									"        \"id\": 2,\r",
+									"        \"email\": \"janet.weaver@reqres.in\",\r",
+									"        \"first_name\": \"Janet\",\r",
+									"        \"last_name\": \"Weaver\",\r",
+									"        \"avatar\": \"https://reqres.in/img/faces/2-image.jpg\"\r",
+									"    },\r",
+									"    \"support\": {\r",
+									"        \"url\": \"https://reqres.in/#support-heading\",\r",
+									"        \"text\": \"To keep ReqRes free, contributions towards server costs are appreciated!\"\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/api/users/2",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST - CREATE",
+			"item": [
+				{
+					"name": "Post Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var retornoEsperado = pm.variables.get('retornoEsperado');\r",
+									"\r",
+									"pm.test('Deve retornar 201', () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve retornar Ticiana L. no atributo name', () => {\r",
+									"    pm.expect(jsonData.name).to.eql(retornoEsperado);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set('retornoEsperado','Ticiana L.');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Ticiana L.\",\r\n\"job\": \"professor\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlApi}}/api/users",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST - REGISTER UNSUCCESSFUL",
+			"item": [
+				{
+					"name": "Post Register Unsuccessful",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set('erroEsperado', 'Note: Only defined users succeed registration');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var retornoErroEsperado = pm.variables.get('erroEsperado');\r",
+									"\r",
+									"pm.test('Deve retornar 400 Bad Request', () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test('Deve conter uma mensagem de erro', () => {\r",
+									"    pm.expect(jsonData.error).to.eql(retornoErroEsperado);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"jean_martins@atlantico.com.br\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlApi}}/api/register",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "urlApi",
+			"value": "https://reqres.in",
+			"type": "string"
+		}
+	]
+}
